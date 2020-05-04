@@ -1,0 +1,48 @@
+.searchInput {
+    width: 30rem !important;
+    height: 2rem !important;
+    padding: 2px;
+}
+
+@media (min-width: 300px) {
+    .searchInput {
+        width: 15rem !important;
+        height: 2rem !important;
+    }
+}
+
+@media (min-width: 576px) {
+    .searchInput {
+        width: 20rem !important;
+        height: 2rem !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .searchInput {
+        width: 35rem !important;
+        height: 2rem !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .searchInput {
+        width: 35rem !important;
+        height: 2rem !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    .searchInput {
+        width: 35rem !important;
+        height: 2rem !important;
+    }
+}
+
+.mb-3.courseSearch.input-group{
+    margin-bottom: 0 !important;
+}
+
+.navbar.navItemPadding{
+    padding: 0rem 2rem !important;
+}

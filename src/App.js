@@ -1,26 +1,56 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+import {Route, Switch, withRouter} from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Layout from "./hoc/Layout/Layout";
+import Courses from "./containers/Courses/Courses";
+import CourseItems from "./containers/Courses/CourseItems/CourseItems";
+import Register from "./containers/Authentication/Register/Register";
+import MyEnrolments from "./containers/Courses/Student/MyEnrolments";
+import MyCourses from "./containers/Courses/Tutor/MyCourses/MyCourses";
+
+class App extends Component {
+
+    render() {
+        let routes = (
+            <Switch>
+                <Route path="/" exact={true} component={Courses}/>
+                <Route path="/course/:id" component={CourseItems}/>
+                <Route path="/signUp" exact={true} component={Register}/>
+                <Route path="/myenrolments" component={MyEnrolments}/>
+                <Route path="/mycourses" component={MyCourses}/>
+                <Route path="/"/>
+            </Switch>
+        );
+
+        return (
+            <div>
+                <Layout>
+                    {routes}
+                </Layout>
+            </div>
+        );
+    }
 }
 
-export default App;
+export default withRouter(App);
+
+
+// import React, {Component} from 'react';
+// import {BrowserRouter} from 'react-router-dom'
+//
+// import Courses from './containers/Courses/Courses';
+//
+// class App extends Component {
+//     render() {
+//         return (
+//             <BrowserRouter>
+//                 <div className="App">
+//                     <Courses/>
+//                 </div>
+//             </BrowserRouter>
+//
+//         );
+//     }
+// }
+//
+// export default App;
