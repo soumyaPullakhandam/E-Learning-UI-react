@@ -14,7 +14,7 @@ class MyCourses extends Component {
 
 
     render() {
-
+            // Add newcourse modal -- to be implemented
         const newcourse = (<AlertModal show={false}
                                        // onModalClose={this.onModalClose}
                                        // body={this.state.modal.body}
