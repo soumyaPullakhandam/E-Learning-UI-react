@@ -5,6 +5,7 @@ import CourseDetail from "../../../components/Course/CourseDetail/CourseDetail"
 import Topic from "../../../components/Course/CourseDetail/Topic/Topic"
 import axios from "../../../axios";
 import {Container} from "react-bootstrap";
+import {connect} from "react-redux";
 
 
 class CourseItems extends Component {
@@ -63,7 +64,9 @@ class CourseItems extends Component {
                                    rating={this.state.course.rating}
                                    author={this.state.course.author}
                                    image={this.state.course.image}
-                                   numLectures={this.state.numLectures}/>
+                                   numLectures={this.state.numLectures}
+                                   authen={this.props.authen}
+                                   group={this.props.group}/>
 
 
             topic = this.state.topics.map(
@@ -91,4 +94,11 @@ class CourseItems extends Component {
 
 }
 
-export default CourseItems
+const mapStateToProps = state => {
+    return {
+        group: (state.auth.group === 1) ? 'tutor' : 'student',
+        authen: state.auth.authen
+    };
+};
+
+export default connect(mapStateToProps)(CourseItems);

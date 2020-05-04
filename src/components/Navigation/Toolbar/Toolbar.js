@@ -3,45 +3,20 @@ import {Navbar} from "react-bootstrap";
 import logo from "../../../assets/images/E-Learning.png";
 import './Toolbar.css';
 import NavigationItems from "../NavigationItems/NavigationItems";
-import {Redirect} from "react-router";
 import {Link} from 'react-router-dom';
-import axios from '../../../axios';
+import * as actions from '../../../store/actions/index';
+import { connect } from 'react-redux';
+
 
 
 class Toolbar extends Component {
 
     state = {
-        email: '',
-        fullname: '',
-        username: '',
-        authen: false,
-        group: 0
     }
 
     componentDidMount() {
-        let email = localStorage.getItem('email'),
-            token = localStorage.getItem('token');
-        if (!!email && !!token) {
-            axios.get('/user/')
-                .then(response => {
-                    const data = response.data[0];
-                    this.setState({
-                        email: data.email,
-                        fullname: `${data.first_name} ${data.last_name}`,
-                        username: data.username,
-                        group : data.groups[0],
-                        authen: true
-                    });
-                }).catch(error => {
-                this.setState({message: error.message, showSignIn: 'visible'});
-            });
-        } else {
-            this.setState({
-                authen: false
-            });
-        }
+        this.props.onAuth();
     }
-
 
     render() {
 
@@ -62,17 +37,34 @@ class Toolbar extends Component {
                         />{' '}
                     </Link>
                 </Navbar.Brand>
-                <NavigationItems email={this.state.email}
-                                 fullname={this.state.fullname}
-                                 username={this.state.username}
-                                 group={this.state.group}
-                                 authen={this.state.authen}/>
+                <NavigationItems email={this.props.email}
+                                 fullname={this.props.fullname}
+                                 username={this.props.username}
+                                 group={this.props.group}
+                                 authen={this.props.authen}/>
             </Navbar>
         )
     };
 
 }
 
-export default Toolbar;
+
+const mapStateToProps = state => {
+    return {
+        email: state.auth.email,
+        fullname: state.auth.fullname,
+        username : state.auth.username,
+        group : (state.auth.group === 1) ? 'tutor' : 'student',
+        authen : state.auth.authen
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: () => dispatch(actions.auth()),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);
 
 

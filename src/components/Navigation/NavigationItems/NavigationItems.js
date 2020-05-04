@@ -11,8 +11,8 @@ import Logout from "../../../containers/Authentication/Logout/Logout";
 
 const navigationItems = (props) => {
 
-    const myEnrolments = (props.authen && props.group === 2) ? <NavLink to="/myenrolments"> <Button variant="dark">My Enrolments</Button></NavLink> : null;
-    const myCourse = (props.authen && props.group === 1) ? <NavLink to="/mycourses"> <Button variant="dark">My Courses</Button></NavLink> : null;
+    const myEnrolments = (props.authen && props.group === 'student') ? <NavLink to="/myenrolments"> <Button variant="dark">My Enrolments</Button></NavLink> : null;
+    const myCourse = (props.authen && props.group === 'tutor') ? <NavLink to="/mycourses"> <Button variant="dark">My Courses</Button></NavLink> : null;
 
     const login = (props.authen) ? null : <Login/>;
     const reg = (props.authen) ? null : <NavLink to="/signup"> <Button variant="dark">Register</Button> </NavLink>;
