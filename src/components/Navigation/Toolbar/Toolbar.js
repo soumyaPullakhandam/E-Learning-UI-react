@@ -55,7 +55,8 @@ const mapStateToProps = state => {
         fullname: state.auth.fullname,
         username : state.auth.username,
         group : (state.auth.group === 1) ? 'tutor' : 'student',
-        authen : state.auth.authen
+        authen : state.auth.authen,
+        id: state.auth.id
     };
 };
 

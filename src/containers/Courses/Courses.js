@@ -82,7 +82,7 @@ class Courses extends Component {
         return (
             <Aux>
                 <section className='Courses'>
-                    <div className="card-deck">
+                    <div className="card-deck row row-cols-1 row-cols-md-5">
                         {courses}
                     </div>
                 </section>

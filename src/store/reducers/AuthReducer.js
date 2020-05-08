@@ -7,6 +7,7 @@ const initialState = {
     fullname: '',
     username: '',
     group: '',
+    id : '',
     authen: false
 
 };
@@ -17,7 +18,8 @@ const authSuccess = (state, action) => {
         fullname: action.fullname,
         username: action.username,
         group: action.group,
-        authen: action.authen
+        authen: action.authen,
+        id : action.id
     });
 };
 
