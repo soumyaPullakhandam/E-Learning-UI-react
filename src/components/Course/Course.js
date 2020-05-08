@@ -12,7 +12,7 @@ const course = (props) => {
         i++;
     }
     return (
-        <div key={props.id} className="col PostCol mb-sm-2" onClick={props.clicked}>
+        <div key={props.id} className="col PostCol mb-4" onClick={props.clicked}>
             <div className="card border-light h-100 Post">
                 <img style={{height: '120px', padding: '0.5rem'}} src={props.image} alt=""/>
                 <div className="card-body PostCard-body">

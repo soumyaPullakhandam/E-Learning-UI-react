@@ -22,7 +22,8 @@ class Register extends Component {
             show: false,
             title: '',
             body: '',
-            bodyCSS: ''
+            bodyCSS: '',
+            size: ''
         },
         error: ''
     }
@@ -122,7 +123,10 @@ class Register extends Component {
                         body={this.state.modal.body}
                         bodyCSS={this.state.modal.bodyCSS}
                         title={this.state.modal.title}
-                        submitVisiblity={'invisible'}>
+                        submitVisiblity={'invisible'}
+                        closeVisiblity={'visible'}
+                        footerVisibility={'visible'}
+                        size={'sm'}>
                 {reg}
             </AlertModal>
 

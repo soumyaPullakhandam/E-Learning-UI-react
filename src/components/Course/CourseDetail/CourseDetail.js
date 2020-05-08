@@ -20,6 +20,8 @@ const courseDetail = (props) => {
 
     let duration = (props.duration / 60).toFixed(1);
 
+    let enrolbutton = (props.group === 'student') ? (<button className="btn btn-info btn-secondary">Enrol now</button>) : null;
+
     return (<div>
 
             <div key={props.id} className="jumbotron p-4 p-md-5 text-white rounded bg-dark">
@@ -60,12 +62,10 @@ const courseDetail = (props) => {
                         </div>
 
                         <div className="col-md-3 px-0">
-                                <Card>
-                                    <Card.Img style={{height: '180px'}} variant="top" src={props.image} alt=""/>
-                                    <Card.Body className="btn">
-                                        <button className="btn btn-secondary">Subscribe</button>
-                                    </Card.Body>
-                                </Card>
+                            <Card className="bg-dark text-white text-center">
+                                    <Card.Img style={{height: '220px'}} variant="top" src={props.image} alt=""/>
+                                    {enrolbutton}
+                            </Card>
                         </div>
 
                     </div>
