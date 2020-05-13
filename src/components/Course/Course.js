@@ -1,16 +1,10 @@
 import React from 'react';
 import './Course.css'
+import Rating from "react-rating";
 
 
 const course = (props) => {
-    let i = 0;
-    let stars = [];
-    while (i<5) {
-        if(props.rating > i)
-            stars.push(<span key={i} className="fa fa-star checked"/>)
-        else stars.push(<span key={i} className="fa fa-star"/>)
-        i++;
-    }
+
     return (
         <div key={props.id} className="col PostCol mb-4" onClick={props.clicked}>
             <div className="card border-light h-100 Post">
@@ -21,8 +15,9 @@ const course = (props) => {
                 </div>
                 <div className="card-footer">
                     <small className="text-muted">Price: {props.price}$ </small>
-                    <span>
-                        {stars}
+                    <span className="my-2">
+                         <Rating initialRating={props.rating} emptySymbol="fa fa-star"
+                                 fullSymbol="fa fa-star checked" readonly={true}/>
                     </span>
 
                 </div>

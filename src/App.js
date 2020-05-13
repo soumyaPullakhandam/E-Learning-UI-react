@@ -5,7 +5,8 @@ import Layout from "./hoc/Layout/Layout";
 import Courses from "./containers/Courses/Courses";
 import CourseItems from "./containers/Courses/CourseItems/CourseItems";
 import Register from "./containers/Authentication/Register/Register";
-import MyEnrolments from "./containers/Courses/Student/MyEnrolments";
+import MyEnrolments from "./containers/Courses/Student/MyEnrolments/MyEnrolments";
+import Learn from "./containers/Courses/Student/Learn/Learn";
 import MyCourses from "./containers/Courses/Tutor/MyCourses/MyCourses";
 
 class App extends Component {
@@ -16,7 +17,8 @@ class App extends Component {
                 <Route path="/" exact={true} component={Courses}/>
                 <Route path="/course/:id" component={CourseItems}/>
                 <Route path="/signUp" exact={true} component={Register}/>
-                <Route path="/myenrolments" component={MyEnrolments}/>
+                <Route path="/myenrolments" exact={true} component={MyEnrolments}/>
+                <Route path="/myenrolments/:id" component={Learn}/>
                 <Route path="/mycourses" component={MyCourses}/>
                 <Route path="/"/>
             </Switch>

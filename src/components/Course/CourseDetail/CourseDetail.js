@@ -3,34 +3,29 @@ import './CourseDetail.css'
 import {Container} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
+import Rating from "react-rating";
 
 
 const courseDetail = (props) => {
     let pubDate = new Date(props.pubDate);
     let UpdatedDate = (pubDate.getMonth() + 1) + '/' + pubDate.getFullYear();
 
-    let star = 0;
-    let stars = [];
-    while (star < 5) {
-        if (props.rating > star)
-            stars.push(<span key={star} className="fa fa-star checked"/>)
-        else stars.push(<span key={star} className="fa fa-star"/>)
-        star++;
-    }
-
     let duration = (props.duration / 60).toFixed(1);
 
-    let enrolbutton = (props.group === 'student') ? (<button className="btn btn-info btn-secondary">Enrol now</button>) : null;
+    let enrolbutton = (props.group === 'student') ? (
+        <button className="btn btn-info btn-secondary" data-id={props.id} onClick={props.onEnrolAccept}>Enrol
+            now</button>) : null;
 
     return (<div>
 
-            <div key={props.id} className="jumbotron p-4 p-md-5 text-white rounded bg-dark">
+            <div key={props.id} className="jumbotron p-4 p-md-5 text-white rounded"
+                 style={{backgroundColor: 'rgb(30, 24, 53)'}}>
                 <Container>
                     <div className="row">
 
                         <div className="col-md-8 px-3">
                             <Row>
-                                <h1 className="display-5">{props.title}</h1>
+                                <h1 className="display-5 text-white">{props.title}</h1>
                             </Row>
                             <Row>
                                 <p className="display-6 my-2">{props.description}</p>
@@ -38,7 +33,12 @@ const courseDetail = (props) => {
                             <Row xs={1} md={2} lg={4} className="my-2">
                                 <p className="my-2 text-success">Created by {props.authorName}</p>
                                 <p className="my-2 text-info">Last updated {UpdatedDate}</p>
-                                <span className="my-2"> {stars} {props.rating}.0 </span>
+                                <span className="my-2">
+                                    <Rating initialRating={props.rating} emptySymbol="fa fa-star"
+                                            fullSymbol="fa fa-star checked" readonly={true}/>
+                                            <strong className="text-light-primary">{props.rating}.0</strong>
+                                </span>
+
                             </Row>
                             <Row className="my-2">
                                 <svg className="bi bi-chat-fill my-2" width="1.2em" height="1.2em" viewBox="0 0 16 16"
@@ -62,9 +62,10 @@ const courseDetail = (props) => {
                         </div>
 
                         <div className="col-md-3 px-0">
-                            <Card className="bg-dark text-white text-center">
-                                    <Card.Img style={{height: '220px'}} variant="top" src={props.image} alt=""/>
-                                    {enrolbutton}
+                            <Card className="text-white text-center" style={{backgroundColor: '#efefef'}}>
+                                <Card.Img style={{height: '220px', padding: '10px'}} variant="top" src={props.image}
+                                          alt=""/>
+                                {enrolbutton}
                             </Card>
                         </div>
 
@@ -73,7 +74,7 @@ const courseDetail = (props) => {
                 </Container>
             </div>
 
-            <Container>
+            <Container className={props.forPreview}>
                 <Card className='noBorder'>
                     <Card.Body className='cardBodyPadding'>
                         <Row xs={2} md={2} lg={2}>

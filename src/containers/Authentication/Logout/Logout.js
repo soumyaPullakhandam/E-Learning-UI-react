@@ -53,7 +53,7 @@ class Logout extends Component {
     render() {
 
         let logout_button = (
-            <Button variant="dark" onClick={(evt) => this.handleSubmit(evt)}>Logout</Button>
+            <Button variant="primary" onClick={(evt) => this.handleSubmit(evt)}>Logout</Button>
         )
 
         return (
