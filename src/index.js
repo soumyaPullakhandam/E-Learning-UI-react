@@ -9,7 +9,6 @@ import thunk from "redux-thunk";
 import AuthReducer from "./store/reducers/AuthReducer";
 
 
-
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';

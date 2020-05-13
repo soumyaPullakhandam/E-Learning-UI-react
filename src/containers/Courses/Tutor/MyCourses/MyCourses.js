@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import Aux from "../../../../hoc/Aux/Aux";
 import './MyCourses.css';
 import axios from "../../../../axios";
-// import axios from 'axios';
 import {connect} from "react-redux";
+
 import CourseList from '../../../../components/Course/Tutor/Course/CourseList/CourseList';
 import TopicList from "../../../../components/Course/Tutor/Topic/TopicList/TopicList";
 import LectureList from "../../../../components/Course/Tutor/Lecture/LectureList/LectureList";
@@ -18,10 +18,12 @@ class MyCourses extends Component {
             size: ''
         },
         newcoursemodal: {},
+        updatecoursemodal: {},
         alertModal: {},
         coursepreviewmodal: {},
         newtopicmodal: {},
         newlecmodal: {},
+        deleteAlertModal: {},
         mycourse: {
             title: '',
             description: '',
@@ -58,7 +60,8 @@ class MyCourses extends Component {
             uploaddiv: "tab-pane fade",
             lecturediv: "tab-pane fade",
         },
-        courseFlag: true
+        courseFlag: true,
+        topicRefreshFlag: false
     }
 
 
@@ -94,10 +97,11 @@ class MyCourses extends Component {
         }
 
         const hash = this.props.location.hash;
-        if (prevProps.location.hash !== hash) {
-            if (hash.search('course') >= 0 && hash.search('topic') < 0)
+        if ((prevProps.location.hash !== hash) || this.state.topicRefreshFlag) {
+            if ((hash.search('course') >= 0 && hash.search('topic') < 0) || this.state.topicRefreshFlag) {
+                this.setState({topicRefreshFlag: false})
                 this.loadCourseDetail(hash);
-            else if (hash.search('course') >= 0 && hash.search('topic') >= 0) {
+            } else if (hash.search('course') >= 0 && hash.search('topic') >= 0) {
                 this.loadTopicDetail(hash);
             }
         }
@@ -131,16 +135,44 @@ class MyCourses extends Component {
         });
     }
 
-    onModalClose = () => {
-        this.setState({modal: {show: false}})
-    };
+
+    onDeleteAlertModalClose = () => {
+        this.setState({deleteAlertModal: {show: false}})
+    }
 
     onAlertModalClose = () => {
         this.setState({alertModal: {show: false}})
     };
 
+    updateCourseModalOpen = (event) => {
+
+        const courses = [...this.state.courses];
+        const id = event.target.dataset.id;
+        const course = courses.find(obj => obj.id === parseInt(id));
+
+        this.setState({
+            mycourse: course
+        });
+
+        this.setState({updatecoursemodal: {show: true}})
+    };
+
+    updateCourseModalClose = () => {
+        this.setState({updatecoursemodal: {show: false}})
+    };
+
     newCourseModalOpen = () => {
         this.setState({newcoursemodal: {show: true}})
+        const newcourse = {
+            title: '',
+            description: '',
+            language: '',
+            categories: [],
+            price: 0,
+            image: null
+        };
+
+        this.setState({mycourse: newcourse})
     };
 
     newCourseModalClose = () => {
@@ -169,6 +201,38 @@ class MyCourses extends Component {
 
     coursePreviewModalClose = () => {
         this.setState({coursepreviewmodal: {show: false}})
+    };
+
+    onTopicEdit = (event) => {
+
+
+    };
+
+    onTopicDeleteConfirm = (id) => {
+
+        const path = "/learn/topic/" + id
+
+        axios.delete(path)
+            .then(response => {
+                this.setState({topicRefreshFlag: true});
+                this.onDeleteAlertModalClose();
+            }).catch(error => {
+            this.setState({error: error})
+        });
+
+    };
+
+    onTopicDelete = (event) => {
+
+        this.setState({
+            deleteAlertModal: {
+                show: true,
+                bodyCSS: 'text-error',
+                title: 'Course Status',
+                size: 'sm'
+            }
+        })
+
     };
 
     onchangelecture = (event) => {
@@ -208,7 +272,7 @@ class MyCourses extends Component {
 
     };
 
-    onLecSubmit = (evt) => {
+    onTopicLecAdd = (evt) => {
         evt.preventDefault();
         let lec = {...this.state.lecture};
         const topic = {...this.state.mytopic};
@@ -221,7 +285,7 @@ class MyCourses extends Component {
 
     };
 
-    onLecUpdate = (evt) => {
+    onTopicLecEdit = (evt) => {
         evt.preventDefault();
         let lec = {...this.state.lecture};
         const topic = {...this.state.mytopic};
@@ -232,7 +296,7 @@ class MyCourses extends Component {
         this.setState({lecture: lec});
     }
 
-    topicLecUpdate = (evt) => {
+    onTopicLecUpdate = (evt) => {
         evt.preventDefault();
         const topic = {...this.state.mytopic};
         const index = evt.target.dataset.index;
@@ -244,7 +308,7 @@ class MyCourses extends Component {
         });
     }
 
-    topicLecDelete = (evt) => {
+    onTopicLecDelete = (evt) => {
         evt.preventDefault();
         const topic = {...this.state.mytopic};
         const index = evt.target.dataset.index;
@@ -417,7 +481,6 @@ class MyCourses extends Component {
 
 
     onLecTopicSubmit = event => {
-        debugger
 
         event.preventDefault();
 
@@ -427,8 +490,7 @@ class MyCourses extends Component {
         topics.course = hash.split('/')[1];
 
 
-
-         axios.post('/learn/batch/', topics)
+        axios.post('/learn/batch/', topics)
             .then(response => {
                 this.setState({
                     newtopicmodal: {
@@ -445,7 +507,6 @@ class MyCourses extends Component {
                     }
                 })
                 this.props.history.push('/mycourses')
-
 
 
             }).catch(error => {
@@ -543,46 +604,65 @@ class MyCourses extends Component {
                         <div className="flex-xl-nowrap row">
 
 
-                            <CourseList mycourse={this.state.mycourse}
-                                        alertModal={this.state.alertModal}
-                                        newcoursemodal={this.state.newcoursemodal}
-                                        courses={this.state.courses}
-                                        newCourseModalOpen={this.newCourseModalOpen}
+                            <CourseList courses={this.state.courses}
+
+                                        mycourse={this.state.mycourse}
                                         cats={this.state.cats}
                                         langs={this.state.langs}
+
+                                        updatecoursemodal={this.state.updatecoursemodal}
+                                        updateCourseModalOpen={this.updateCourseModalOpen}
+                                        updateCourseModalClose={this.updateCourseModalClose}
+
+                                        newcoursemodal={this.state.newcoursemodal}
+                                        newCourseModalOpen={this.newCourseModalOpen}
                                         newCourseModalClose={this.newCourseModalClose}
+
+                                        alertModal={this.state.alertModal}
                                         onAlertModalClose={this.onAlertModalClose}
+
                                         handleNewCourseSubmit={(evt) => this.handleNewCourseSubmit(evt)}
                                         handleNewCourseChange={(evt) => this.handleNewCourseChange(evt)}/>
 
 
                             <TopicList topics={this.state.topics}
-                                       alertModal={this.state.alertModal}
                                        coursedetails={this.state.coursedetails}
                                        mytopic={this.state.mytopic}
                                        lecture={this.state.lecture}
-                                       newtopicmodal={this.state.newtopicmodal}
-                                       coursepreviewmodal={this.state.coursepreviewmodal}
                                        classes={this.state.classes}
-                                       newCourseModalOpen={this.newCourseModalOpen}
-                                       newCourseModalClose={this.newCourseModalClose}
+
+                                       deleteAlertModal={this.state.deleteAlertModal}
+                                       onDeleteAlertModalClose={this.onDeleteAlertModalClose}
+
+                                       alertModal={this.state.alertModal}
                                        onAlertModalClose={this.onAlertModalClose}
-                                       handleNewCourseSubmit={(evt) => this.handleNewCourseSubmit(evt)}
-                                       handleNewCourseChange={(evt) => this.handleNewCourseChange(evt)}
+
+                                       newtopicmodal={this.state.newtopicmodal}
                                        newTopicModalOpen={this.newTopicModalOpen}
                                        newTopicModalClose={this.newTopicModalClose}
+
+                                       coursepreviewmodal={this.state.coursepreviewmodal}
                                        coursePreviewModalOpen={this.coursePreviewModalOpen}
                                        coursePreviewModalClose={this.coursePreviewModalClose}
+
                                        onchangelecture={(evt) => this.onchangelecture(evt)}
                                        onchangetopic={(evt) => this.onchangetopic(evt)}
-                                       onLecSubmit={(evt) => this.onLecSubmit(evt)}
                                        handleNewTopicSubmit={(evt) => this.handleNewTopicSubmit(evt)}
-                                       onLecUpdate={(evt) => this.onLecUpdate(evt)}
-                                       topicLecUpdate={(evt) => this.topicLecUpdate(evt)}
-                                       topicLecDelete={(evt) => this.topicLecDelete(evt)}
+
+                                       onTopicLecAdd={(evt) => this.onTopicLecAdd(evt)}
+                                       onTopicLecEdit={(evt) => this.onTopicLecEdit(evt)}
+                                       onTopicLecUpdate={(evt) => this.onTopicLecUpdate(evt)}
+                                       onTopicLecDelete={(evt) => this.onTopicLecDelete(evt)}
+
                                        onchangelecUpload={(evt) => this.onchangelecUpload(evt)}
                                        onUploadSubmit={(evt => this.onUploadSubmit(evt))}
-                                       onLecTopicSubmit={evt => this.onLecTopicSubmit(evt)}/>
+                                       onLecTopicSubmit={evt => this.onLecTopicSubmit(evt)}
+
+                                       onTopicEdit={(evt) => this.onTopicEdit(evt)}
+                                       onTopicDelete={(evt) => this.onTopicDelete(evt)}
+                                       onTopicDeleteConfirm={(id) => this.onTopicDeleteConfirm(id)}
+
+                            />
 
 
                             <LectureList lectures={this.state.lectures}
@@ -590,7 +670,6 @@ class MyCourses extends Component {
                                          topicdetails={this.state.topicdetails}
                                          mylec={this.state.mylec}
                                          newlecmodal={this.state.newlecmodal}
-                                         coursepreviewmodal={this.state.coursepreviewmodal}
                                          onAlertModalClose={this.onAlertModalClose}
                                          newLecModalOpen={this.newLecModalOpen}
                                          newLecModalClose={this.newLecModalClose}/>

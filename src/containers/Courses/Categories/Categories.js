@@ -33,15 +33,16 @@ class Categories extends Component {
         }
         return (
             <Aux>
-                <li className="nav-item dropdown">
-                    <a className="nav-link dropdown-toggle" href="#categories" id="navbarDropdownMenuLink"
-                             role="button"
-                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li className="nav-item dropdown ">
+                    <a className="nav-link dropdown-toggle" href="#  " id="menu-2"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false" data-display="static">
                         Categories
                     </a>
-                    <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <ul className="dropdown-menu  dropdown-menu-right dropdown-menu-xl-left  dropdown-menu-arrow "
+                        aria-labelledby="menu-2">
                         {cats}
-                    </div>
+                    </ul>
                 </li>
             </Aux>
         )

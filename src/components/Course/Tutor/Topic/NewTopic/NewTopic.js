@@ -10,7 +10,7 @@ const newTopic = (props) => {
                     {lec.title}
                     <div className="btn-group btn-group-sm">
                         <button className="btn btn-outline-secondary" data-index={index}
-                                onClick={(evt) => props.topicLecUpdate(evt)}>
+                                onClick={(evt) => props.onTopicLecUpdate(evt)}>
                             <svg className="bi bi-brush not-active text-secondary" width="15" height="15" viewBox="0 0 16 16"
                                  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -20,7 +20,7 @@ const newTopic = (props) => {
                             </svg>
                         </button>
                         <button className="btn btn-outline-secondary" data-index={index}
-                                onClick={(evt) => props.topicLecDelete(evt)}>
+                                onClick={(evt) => props.onTopicLecDelete(evt)}>
                             <svg className="bi bi-trash-fill  not-active text-secondary" width="18" height="18" viewBox="0 0 16 16"
                                  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fillRule="evenodd"
@@ -69,14 +69,14 @@ const newTopic = (props) => {
         if (props.lecture.hasOwnProperty('id')) {
             updateLecture = (
                 <button className="btn btn-outline-secondary text-center btn-light btn-sm"
-                        onClick={props.onLecUpdate}
+                        onClick={props.onTopicLecEdit}
                         type="submit"> Update Lecture
                 </button>
             )
         }
 
         addlectures = (
-            <form className="needs-validation" onSubmit={props.onLecSubmit}>
+            <form className="needs-validation" onSubmit={props.onTopicLecAdd}>
                 <div className="mb-3">
                     <input type="text" className="form-control"
                            placeholder="Provide title of the lecture"

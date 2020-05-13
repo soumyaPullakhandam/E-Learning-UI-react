@@ -38,13 +38,18 @@ class CourseItems extends Component {
                 this.setState({error: error})
             });
 
-
         }
 
     };
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-
+    onEnrolAccept = (evt) => {
+        const id = evt.target.dataset.id;
+        axios.post('/enrol/', {'course': id})
+            .then(response => {
+                this.props.history.push('/myenrolments');
+            }).catch(error => {
+            this.setState({error: error})
+        });
     };
 
 
@@ -66,7 +71,9 @@ class CourseItems extends Component {
                                    image={this.state.course.image}
                                    numLectures={this.state.numLectures}
                                    authen={this.props.authen}
-                                   group={this.props.group}/>
+                                   group={this.props.group}
+                                   onEnrolAccept={this.onEnrolAccept}
+            />
 
 
             topic = this.state.topics.map(

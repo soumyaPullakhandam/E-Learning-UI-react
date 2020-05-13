@@ -82,10 +82,13 @@ class Login extends Component {
 
     render() {
 
+
         let login_button = (
-            <Button variant="dark" onClick={() => {
+        <div className="header-btn ">
+            <Button className="btn btn-primary btn-sm" onClick={() => {
                 this.setState({modal: {show: true}})
-            }}>Login</Button>
+            }}>Login</Button>{' '}
+            </div>
         )
 
         return (

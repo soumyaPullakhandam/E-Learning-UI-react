@@ -17,7 +17,7 @@ class LoginModal extends Component {
                 <Modal show={this.props.show} animation={true} onHide={this.props.onModalClose}>
                     <Modal.Body>
                         <form className="needs-validation" onSubmit={this.props.onSubmit}>
-                            <div className="py-6 text-center">
+                            <div className="text-center">
                                 <img className="d-block mx-auto mb-4"
                                      src={icon}
                                      alt=""
