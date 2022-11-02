@@ -19,7 +19,7 @@
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "video.js": "^7.7.6"
+    "video.js": "^7.20.3"
   },
   "scripts": {
     "start": "react-scripts start",
